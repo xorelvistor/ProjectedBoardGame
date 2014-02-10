@@ -6,8 +6,11 @@ class m_sector;
 class m_desk {
 private:
 	int desk_type;
-	m_sector *sectors[4];
+	std::list<m_sector*> sectors;
 public:
 	m_desk(int);
+//	m_desk(const m_desk &);
 	int getDeskType();
+	std::list<m_sector*> getSectors();
+	
 };

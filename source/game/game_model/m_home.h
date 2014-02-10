@@ -6,13 +6,20 @@
 class m_field;
 class m_figure;
 class m_sector;
-class m_home{
+class m_player;
+class m_home {
 private:
 	int figure_count;
-	m_field *fields[4];
-	m_figure *figures[4];
-	m_sector * sector;
+	std::list<m_field*> fields;
+	//std::list<m_figure*> figures;
+	m_sector *sector;
 public:
-	m_home(m_sector*);
+	m_home();
+	m_home(m_sector *);
+//	m_home(const m_home &);
+	~m_home();
 	int getFigureCount();
+	std::list<m_field*> getFields();
+	std::list<m_figure*> getFigures();
+	void initHome(m_player *);
 };

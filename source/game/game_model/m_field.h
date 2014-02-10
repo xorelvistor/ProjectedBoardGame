@@ -5,14 +5,25 @@ class m_figure;
 class m_sector;
 class m_field {
 private:
-	m_figure *figure; /// figura na poli
 	int id; /// cislo pole v ramci sektoru
+	m_figure *figure; /// figura na poli
 	m_sector *sector; /// sektor do ktereho pole patri
+	
 public:
-	m_field(m_sector *sector,int number);
+	std::string special;
+	m_field();
+	m_field(int number);
+	m_field(m_sector *,int);
+	m_field(m_sector *,int,std::string);
+	m_field(const m_field &);
+	friend std::ostream& operator<<(std::ostream& os,const m_field& m_f);
+	~m_field(void);
 	int getID();
-	m_sector getSector();
-	void putFigure(m_figure);
-	void removeFigure();
+	m_sector *getSector();
+	m_figure *getFigure();
+	bool isFree();
+	void putFigure(m_figure *);
+	m_figure *removeFigure();
+	static int pocet;
 
 };

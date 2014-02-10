@@ -8,10 +8,14 @@ class m_sector;
 class m_finish{
 private:
 	int figure_count;
-	m_field *fields[4];
-	m_figure *figures[4];
-	m_sector * sector;
+	std::list<m_field*> fields;
+	//std::list<m_figure> figures;
+	m_sector *sector;
 public:
+	m_finish();
 	m_finish(m_sector*);
+//	m_finish(const m_finish &);
+	~m_finish();
 	int getFigureCount();
+	std::list<m_field*> getFields();
 };

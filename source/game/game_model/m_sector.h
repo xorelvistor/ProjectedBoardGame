@@ -1,23 +1,30 @@
 #pragma once
 #include "_game.h"
+//#include <list>
 #define FIELDS_IN_SECTOR 10
-
 /// trida reprezentujici sektor hraciho planu
 class m_home;
 class m_field;
 class m_finish;
+//typedef list<m_field> LISTFIELD;
 class m_sector {
-public:
-	m_sector(int);
-	int getID();
-	m_home getStart();
-	m_finish getFinish();
-	m_field *getFields();
-	m_sector nextSector();
 private:
-	m_home * start;
-	m_finish * finish;
+	m_home *start;
+	m_finish *finish;
 	int id;
-	m_field *fields[FIELDS_IN_SECTOR];
+	std::list<m_field*> fields;
+public:
+	m_sector();
+	m_sector(int);
+	m_sector(const m_sector&);
+	~m_sector();
+	m_sector *getSector();
+	int getID();
+	m_home *getStart();
+	m_finish *getFinish();
+	std::list<m_field*> getFields();
+	std::list<m_figure*> getFigures();
+	m_sector nextSector();
+
 
 };
