@@ -48,11 +48,12 @@ m_field::~m_field() {
 }
 
 ostream& operator<<(ostream& os,const m_field& m_f) {
-	os << "Pole c.: " << m_f.id << " ("<< m_f.special << "), @ " << (&m_f) << endl;
+	os << "Pole c.: " << m_f.id <<  ", &" << (&m_f) << endl;
+	os << "\ttyp: " << m_f.special << endl;
 	if (m_f.sector != NULL)
-		os << "\tv sektoru c.: " << m_f.sector->getID() << ", @ " << m_f.sector << endl;
+		os << "\tv sektoru c.: " << m_f.sector->getID() << ", &" << m_f.sector << endl;
 	if (m_f.figure != NULL)
-		os << "\tfigura: id.: " << m_f.figure->getID() << " @ " << m_f.figure << endl;
+		os << "\t" << *(m_f.figure);
 	return os;
 }
 /// vrati sektor, ke kteremu pole prislusi
@@ -75,10 +76,15 @@ bool m_field::isFree() {
 		return true;
 	}
 }
+int m_field::leftUntilEnd() {
+	return 9-id;
+}
 /// vlozi figuru na pole
 void m_field::putFigure(m_figure *figure) {
+	//cout << "- putFigure -" << endl;
 	this->figure = figure;
-	cout << "vlozena figura (" << this->figure << ") na pole (" << &(*this) <<") [" << sector << "]" << sector->getID() << "-" << id << " => volno: " << isFree() << endl;
+	//cout << *figure;
+
 }
 /// odstrani figuru z pole a vrati ji
 m_figure *m_field::removeFigure() {
@@ -86,5 +92,6 @@ m_figure *m_field::removeFigure() {
 	old = figure; 
 	figure = NULL;
 	return old;
+	
 }
 

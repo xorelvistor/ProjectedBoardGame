@@ -22,104 +22,93 @@ int main () {
 	std::list<m_figure*> figurky;
 	std::list<m_figure*>::iterator iF;
 	std::list<m_field*>::iterator iP;
+	std::vector <m_field*> moznosti;
+	std::vector <m_field*>::iterator iM;
 
 	sektory = desk->getSectors();
 	iS = sektory.begin();
+	//std::advance(iS,3);
 
 	hrac1 = new m_player("petr");
 	hrac1->setSector(*iS);
 	hrac1->setHome();
 
-	//for (; iS!= sektory.end(); iS++) {
-		cout << "sektor c.: " << (*iS)->getID() << " @ " << (*iS) << endl;
-		for (int i = 0; i < 3; i++) {
+	policka = hrac1->getSector()->getFields();
+	iP = policka.begin();
+	std::advance(iP,1);
+	figurky = hrac1->getMyFigures();
+	iF = figurky.begin();
+	
+	cout << "--- nahozeni prvni figury ---\n";
+	figurka = hrac1->getSector()->getStart()->crankUp();
+	policko = desk->findStrokes(hrac1,5);
+	figurka->move(policko);
+	cout << "--- nahozeni druhe figury ---\n";
+	figurka = hrac1->getSector()->getStart()->crankUp();
+	policko = desk->findStrokes(hrac1,7);
+	figurka->move(policko);
+	policko = desk->findStrokes(hrac1,2);
+	moznosti = hrac1->getStrokes();
+	cout << "**** moznosti ****" << endl;
+	
+	for (int i = 0; i < moznosti.size() ; i++) {
+		cout << "pro figuru c.: " << i << endl;
+		if(moznosti[i] != NULL)
+			cout << *moznosti[i] << endl;
+	}
+	
+	//figurka=hrac1->getSector()->getStart()->crankUp();
+	//figurka=hrac1->getSector()->getStart()->crankUp();
+	//figurka=hrac1->getSector()->getStart()->crankUp();
+	//figurka=hrac1->getSector()->getStart()->crankUp();
+	/*
+	cout << "--- posun prvni figury ---\n";
+	std::advance(iP,1);
+	figurka->move(*iP);
+	cout << "--- nahozeni druhe figury ---\n";
+	figurka=hrac1->getSector()->getStart()->crankUp();
+	cout << "--- posun druhe figury ---\n";
+	std::advance(iP,1);
+	figurka->move(*iP);
+	cout << "--- nahozeni treti figury ---\n";
+	figurka=hrac1->getSector()->getStart()->crankUp();
+	cout << "--- posun treti figury ---\n";
+	std::advance(iP,1);
+	figurka->move(*iP);
+	cout << "--- nahozeni ctvrte figury ---\n";
+	figurka=hrac1->getSector()->getStart()->crankUp();
+	cout << "--- posun ctvrte figury ---\n";
+	std::advance(iP,1);
+	figurka->move(*iP);
+	*/
+	/*
+	iS = sektory.begin();
+	
+	cout << "------------- pruchod v mainu -------------" << endl;
+	int oblasti = 2;
+	//for (iS = sektory.begin(); iS!= sektory.end(); iS++) {
+		cout << "sektor c.: " << (*iS)->getID() << ", &" << (*iS) << endl;
+		for (int i = 0; i < oblasti; i++) {
 			if (i == 0) {
-				cout << "-- startovni pole" << endl;
+				cout << "------------------------- startovni pole --------------------------" << endl;
+				cout << "Pocet figur: " << (*iS)->getStart()->getFigureCount() << endl;
 				policka = (*iS)->getStart()->getFields();
 			} else if (i == 1) {
-				cout << "-- hraci pole" << endl;
+				cout << "------------------------- hraci pole --------------------------" << endl;
 				policka = (*iS)->getFields();
-			} else if (i == 2) {
-				cout << "-- cilova pole" << endl;
-				policka = (*iS)->getFinish()->getFields();
-			}
+			} 
+			//else if (i == 2) {
+			//	cout << "------------------------- cilova pole --------------------------" << endl;
+			//	cout << (*iS)->getFinish()->getFigureCount() << endl;
+			//	policka = (*iS)->getFinish()->getFields();
+			//}
 			for (iP = policka.begin() ; iP != policka.end(); iP++) {
 				cout << "-" << *(*iP);
 			}
 		}
 	//}
-
-	policka = hrac1->getSector()->getFields();
-	iP = policka.begin();
-	std::advance(iP,5);
-	figurky = hrac1->getMyFigures();
-	iF = figurky.begin();
-	(*iF)->move(*iP);
-
-	for (int i = 0; i < 3; i++) {
-		if (i == 0) {
-			cout << "-- startovni pole" << endl;
-			policka = (*iS)->getStart()->getFields();
-		} else if (i == 1) {
-			cout << "-- hraci pole" << endl;
-			policka = (*iS)->getFields();
-		} else if (i == 2) {
-			cout << "-- cilova pole" << endl;
-			policka = (*iS)->getFinish()->getFields();
-		}
-		for (iP = policka.begin() ; iP != policka.end(); iP++) {
-			cout << "-" << *(*iP);
-		}
-	}
-
-/*
-	cout << "---main---" << endl;
-	
-	cout << "typ hry: " << desk->getDeskType() << endl;
-	sektory = desk->getSectors();
-	iS = sektory.begin();
-	sektor = &(*iS); //prirazeni ukazatele na sektor
-	hrac1->setSector(sektor); // predani ukazatele na sektor
-	sektor->getStart()->setHome(hrac1);
-	policka = sektor->getFields();
-	figurky = hrac1->getMyFigures();
-	iF = figurky.begin();
-	figurka = &(*iF);
-	iP = policka.begin();
-	iP++;iP++;
-	figurka->move(&(*iP));
-	cout << "\n--- hledame v mainu ---" << endl;
-	int pruchodu = 2;
-	sektory = desk->getSectors();
-	for (iS = sektory.begin(); iS != sektory.end(); iS++) {
-		cout << "sektor c. " << iS->getID() << " (" << &(*iS) << ")" << endl;
-		for (int i = 0; i < pruchodu; i++) {
-
-			if (i == 0) policka = (*iS).getStart()->getFields();
-			if (i == 1) policka = (*iS).getFields();
-			//if (i == 2) policka = (*iS).getFinish()->getFields();
-
-			for (iP = policka.begin() ; iP != policka.end() ; iP++) {
-				cout << "na poli " << iP->getID() << " (" << &(*iP) << ")";
-				if (iP->isFree()) {
-					cout << " neni figura, koukni: " << iP->getFigure() << endl;
-				} else {
-					figurka = iP->getFigure();
-					cout << " je figura: " << figurka << " na pozici " << figurka->getField()->getSector()->getID() << "-" << figurka->getField()->getID();
-					cout << " (" << figurka->getField()->special << ")" << endl;
-				}
-			}
-		}
-	}
-	figurky = hrac1->getMyFigures();
-	figurka = NULL;
-	for (iF=figurky.begin(); iF != figurky.end(); iF++) {
-		figurka = &(*iF);
-		if (figurka != NULL)
-			cout << &(*figurka) << "->" << figurka->getField()->getSector()->getID() << "-" << figurka->getField()->getID() << " (" << figurka->getField()->special << ")" << endl;
-	}
-	cout << "pocet instanci: " << m_field::pocet << ", " << m_figure::pocet << endl;
-*/	
+*/
+	cout << "xxxxx konec mainu xxxxx" << endl;
 	getchar();
 	return 0;
 }

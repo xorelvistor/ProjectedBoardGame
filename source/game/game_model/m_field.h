@@ -22,6 +22,7 @@ public:
 	m_sector *getSector();
 	m_figure *getFigure();
 	bool isFree();
+	int leftUntilEnd();
 	void putFigure(m_figure *);
 	m_figure *removeFigure();
 	static int pocet;

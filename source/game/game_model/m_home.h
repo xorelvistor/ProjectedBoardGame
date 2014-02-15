@@ -21,5 +21,7 @@ public:
 	int getFigureCount();
 	std::list<m_field*> getFields();
 	std::list<m_figure*> getFigures();
+	void increaseCount();
 	void initHome(m_player *);
+	m_figure* crankUp();
 };

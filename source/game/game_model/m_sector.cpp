@@ -13,7 +13,7 @@ m_sector::m_sector(int number) {
 	list<m_field>::iterator iter;
 	m_field *pole;
 	for(int i = 0; i < 10 ; i++) {
-		pole = new m_field(this,i);
+		pole = new m_field(this,i,"hraci");
 		fields.push_back(pole);
 		if (fields.empty()) {
 			cout << "koncim" << endl;

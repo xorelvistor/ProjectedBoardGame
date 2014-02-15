@@ -3,6 +3,7 @@ m_home::m_home(){cout << "Obycejny konstruktor home" << endl;}
 m_home::m_home(m_sector *sector) {
 	//cout << "Obycejny konstruktor home" << endl;
 	//cout << "\n\tstartovni pozice" << endl;
+	this->sector = sector;
 	figure_count = 4;
 	list<m_field*>::iterator iterF;
 	m_field *pole;
@@ -42,12 +43,16 @@ std::list<m_field*>  m_home::getFields() {
 	return fields;
 }
 
+void m_home::increaseCount() {
+	figure_count++;
+}
 void m_home::initHome(m_player *owner) {
 	m_figure *figure;
 	m_field *field;
 	std::string zprava="";
 	list<m_field*>::iterator iterF;
 	int i = 0;
+	cout << "-- initHome --" << endl;
 	cout << "V sektoru (" << owner->getSector()->getID() << ") hrace \"" << owner->getName() << "\" byly vytvoreny tyto figury:\n";
 	for (iterF = fields.begin();iterF != fields.end(); iterF++) {
 		figure = new m_figure(owner,i);
@@ -56,6 +61,30 @@ void m_home::initHome(m_player *owner) {
 		figure->setField(field);
 		owner->setFigure(figure);
 		i++;
-//		cout << figure << " -> " << figure->getField()->getSector()->getID() << "-" << figure->getField()->getID() << " (" << figure->getField()->special << endl;
 	}
+}
+/// nahodi figuru do hry
+m_figure* m_home::crankUp() {
+	cout << "-- crankUp --" << endl;
+	std::list<m_field*>::iterator iterF;
+	std::list<m_field*> fields;
+	m_figure* figure;
+	for(iterF = this->fields.begin(); iterF != this->fields.end(); iterF++) {
+		if ((figure = (*iterF)->getFigure()) != NULL) {
+			cout << *figure;
+			break;
+		}
+	}
+	if (figure == NULL) {
+		cout << "zadna figura na startu" << endl;
+		return NULL;
+	}
+	if (figure->getAtHome()) {
+		fields = sector->getFields();
+		iterF = fields.begin();
+		figure->move(*(++iterF));
+		figure->setAtHome();
+	}
+	figure_count--;
+	return figure;
 }

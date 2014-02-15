@@ -12,5 +12,5 @@ public:
 //	m_desk(const m_desk &);
 	int getDeskType();
 	std::list<m_sector*> getSectors();
-	
+	m_field* findStrokes(m_player*, int);
 };
