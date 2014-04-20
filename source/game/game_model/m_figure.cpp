@@ -1,56 +1,99 @@
 #include "m_figure.h"
+#include "m_player.h"
+
+#include "m_sector.h"
+#include "m_field.h"
+#include "m_home.h"
+
+
+/** Bezparametricky konstruktor **/
+/**
+ * m_figure
+ * konstruktor bez parametru
+ */
 m_figure::m_figure(){
-	//cout << "Obycejny konstruktor figury" << endl;
 	field = NULL;
 	owner = NULL;
 	at_home = true;
 	out_of_sector = false;
 	id = 42;
 }
-m_figure::m_figure(m_player *player, int id) {
-	//cout << "Obycejny konstruktor figury" << endl;
+
+/** Konstruktor **/
+/**
+ * m_figure
+ * konstruktor - inicializuje objekt
+ *
+ * @param player hrac, kteremu figura patri
+ * @param id oznaceni figury
+ */
+m_figure::m_figure(m_player* player, int id) {
 	at_home = true; /// figura zacina v domecku
 	out_of_sector = false;
 	owner = player;
 	field = NULL;
 	this->id = id;
-	pocet++;
 }
-/*
-m_figure::m_figure(const m_figure &original) {
-	cout << "Kopirovaci konstruktor figury" << endl;
-	
-	owner = new m_player();
-	field = new m_field();
-	*owner = *(original.owner);
-	*field = *(original.field);
-	at_home = original.at_home;
-	
-}
-*/
+
+/** 
+ * destruktor
+ * uvolni objekt
+ */
 m_figure::~m_figure() {
 	field = NULL;
 	owner = NULL;
 	delete field;
 	delete owner;
 }
-/// vrati pole na kterem se figura nachazi
-m_field *m_figure::getField() {
+
+/**
+ * getField
+ * vrati pole na kterem figura stoji
+ *
+ * @return pole na kterem figura stoji
+ */
+m_field* m_figure::getField() {
 	return field;
 }
-///
+
+/**
+ * getAtHome
+ * zjisti, zda je figura ve hre
+ *
+ * @return true-pokud figura neni ve hre
+ * @return false-pokud figura je ve hre
+ */
 bool m_figure::getAtHome() {
 	return at_home;
 }
 
+/**
+ * getOutOfSector
+ * zjisti, zda jiz figura opustila svuj startovni sektor
+ *
+ * @return true-figura jiz opustila startovni sektor
+ * @return false-figura jeste neopustila startovni sektor
+ */
 bool m_figure::getOutOfSector() {
 	return out_of_sector;
 }
 
+/**
+ * getOwner
+ * vrati hrace, kteremu figura patri
+ *
+ * @return vlastnik figury
+ */
 m_player* m_figure::getOwner() {
 	return owner;
 }
 
+/**
+ * getID
+ * vrati cislo figury
+ *
+ * @return oznaceni figury
+ */
 int m_figure::getID() {
 	return id;
 }
@@ -67,21 +110,40 @@ ostream& operator<<(ostream& os,const m_figure& m_f) {
 	return os;
 }
 
-/// nastavi pole na kterem figura stoji
-void m_figure::setField(m_field *field) {
+/**
+ * setField
+ * nastavi pole na kterem figura stoji
+ *
+ * @param field pole, ktere ma byt prirazeno
+ */
+void m_figure::setField(m_field* field) {
 	this->field = field;
 }
 
+/** 
+ * setAtHome
+ * zmeni stav figury
+ */
 void m_figure::setAtHome() {
 	at_home = !at_home;
 }
 
+/**
+ * setOutOfSector
+ * zmeni stav figury
+ */
 void m_figure::setOutOfSector() {
-	out_of_sector = true;
+	out_of_sector = !out_of_sector;
 }
 
-void m_figure::move(m_field *new_field) {
-	cout << "---move---" << endl;
+/**
+ * move
+ * presune figuru na nove pole, pokud narazi na cizi figuru vyhodi ji
+ *
+ * @param new_field pole, kam se ma figura presunout
+ */
+void m_figure::move(m_field* new_field) {
+	//cout << "---move---" << endl;
 	//cout << "-> from\n" << *field;
 	//cout << "<- to\n" << *new_field;
 	m_figure *figure;
@@ -90,8 +152,8 @@ void m_figure::move(m_field *new_field) {
 	//cout << "- getFigure - to -" << endl;
 	figure = new_field->getFigure();
 
-	if (figure != NULL && new_field == owner->getStrokes()[id]) {
-		//cout << "mam" << endl << *figure;
+	if (figure != NULL && new_field == owner->getStrokes()[id] && figure != this) {
+		cout << "mam" << endl << *figure;
 		figure->goHome();
 	}
 	//cout << "- removeFigure - to -" << endl;
@@ -103,10 +165,11 @@ void m_figure::move(m_field *new_field) {
 	}
 	
 }
-void m_figure::attack(m_figure *figure) {
 
-}
-/// vrati figuru na start
+/**
+ * goHome
+ * vrati figuru na start
+ */
 void m_figure::goHome() {
 	cout << "--- goHome ---\n";
 	list<m_field*>::iterator iterF;
@@ -123,5 +186,7 @@ void m_figure::goHome() {
 	}
 	setAtHome();
 	home->increaseCount();
-	cout << "--- end goHome ---\n";
+	if(out_of_sector)
+		setOutOfSector();
+	//cout << "--- end goHome ---\n";
 }

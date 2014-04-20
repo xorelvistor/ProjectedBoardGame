@@ -232,8 +232,19 @@ cv::Mat startCameraCalibration(cv::Mat& cameraMatrix,cv::Size& boardSize) {
 	const char ESC_KEY = 27;
 
 	cout << s.boardSize << endl <<s.delay << endl << s.squareSize << endl;
+	cout << "BRIGHTNESS: " << s.inputCapture.get(CV_CAP_PROP_BRIGHTNESS) << endl;
+	cout << "CONTRAST: " << s.inputCapture.get(CV_CAP_PROP_CONTRAST) << endl;
+	cout << "SATURATION: " << s.inputCapture.get(CV_CAP_PROP_SATURATION) << endl;
+	cout << "FOCUS: " << s.inputCapture.get(CV_CAP_PROP_FOCUS) << endl;
+	cout << "EXPOSURE" << s.inputCapture.get(CV_CAP_PROP_EXPOSURE) << endl;
+	cout << "GAIN: " << s.inputCapture.get(CV_CAP_PROP_GAIN) << endl;
+	
 	boardSize = s.boardSize;
 
+	if(getchar()== 's') {
+		cout << "skip camera calibration" << endl;
+		return cv::Mat();
+	}
 	/* kalibrace dle nastaveni */
 
 	bool found = false;
@@ -424,12 +435,11 @@ bool systemCalibration(cv::Mat& camera, cv::Mat& distorsionCoeff, cv::Mat& homog
 
 	VideoCapture cam;
 	cout << "***** Kalibrace kamery *****" <<endl;
-	getchar();
 	distorsionCoeff = startCameraCalibration(camera,boardSize);
-	
-	cout << endl << camera << endl;
-	cout << endl << distorsionCoeff << endl << endl;
-
+	if(!camera.empty()) {
+		cout << endl << camera << endl;
+		cout << endl << distorsionCoeff << endl << endl;
+	}
 	cout << "***** Nacteni a zobrazeni testovaci sachovnice *****" <<endl;
 	cv::Mat projection = imread("board.jpg",CV_LOAD_IMAGE_COLOR);
 	if (projection.empty()) {
@@ -443,8 +453,23 @@ bool systemCalibration(cv::Mat& camera, cv::Mat& distorsionCoeff, cv::Mat& homog
 	moveWindow("Kalibrace",PROJECTOR_X, PROJECTOR_Y);
 	imshow("Kalibrace", projection); 
 	cvWaitKey(100);
+
 	cam.open(0);
+	
+	cam.set(CV_CAP_PROP_SATURATION,32.0);
+	cam.set(CV_CAP_PROP_CONTRAST,32.0);
+	cam.set(CV_CAP_PROP_BRIGHTNESS,128.0);
+	//cam.set(CV_CAP_PROP_EXPOSURE,0.0);
+	//cam.set(CV_CAP_PROP_GAIN,128.0);
+while(true) {	
 	cout << "***** Porizeni obrazu sachovnice kamerou *****" <<endl;
+
+	cout << "BRIGHTNESS: " << cam.get(CV_CAP_PROP_BRIGHTNESS) << endl;
+	cout << "CONTRAST: " << cam.get(CV_CAP_PROP_CONTRAST) << endl;
+	cout << "SATURATION: " << cam.get(CV_CAP_PROP_SATURATION) << endl;
+	cout << "FOCUS: " << cam.get(CV_CAP_PROP_FOCUS) << endl;
+	cout << "EXPOSURE" << cam.get(CV_CAP_PROP_EXPOSURE) << endl;
+	cout << "GAIN: " << cam.get(CV_CAP_PROP_GAIN) << endl;
 	
 	if (cam.isOpened()) {
 		cvWaitKey(100); // cekame na ustaleni obrazu
@@ -456,22 +481,33 @@ bool systemCalibration(cv::Mat& camera, cv::Mat& distorsionCoeff, cv::Mat& homog
 	if(!camera.empty() && !distorsionCoeff.empty())
 		undistort(temp,view,camera,distorsionCoeff);
 	*/
+	
 	namedWindow("Undistort",CV_WINDOW_AUTOSIZE);
 	moveWindow("Undistort", 400, 100);
 	imshow("Undistort",view);
 	cvWaitKey(100);
-	imwrite("kamera.jpg",view);
+	
+	/*
+	if (waitKey() == 27) {
+		view = projection; //DEBUG
+	}
+	*/
+
 	/* nalezeni homografie mezi kamerou a projektorem */
 	cout << "***** Nalezeni klicovych bodu v obrazech => homografie *****" << endl;
 	cv::Mat in_homography = projectorCalibration(view,boardSize,squarePixSize);
 	if(in_homography.cols != 3) {
 		cout << "nenalezena homografie" << endl;
-		return false;
+		//return false;
+	} else {
+		homography = in_homography;
+		cout << endl << in_homography << endl << endl;
+		break;
 	}
-	homography = in_homography;
-	cout << endl << in_homography << endl << endl;
-	//return true;
+
 	
+	//return true;
+}	
 	/*
 	cout << endl << "***** Reakce na mys *****" <<endl;
 	getchar();
@@ -483,6 +519,6 @@ bool systemCalibration(cv::Mat& camera, cv::Mat& distorsionCoeff, cv::Mat& homog
 	}
 	return EXIT_SUCCESS;
 	*/
-	cv::destroyAllWindows(); 
+	cv::destroyAllWindows();
 	return true;
 }

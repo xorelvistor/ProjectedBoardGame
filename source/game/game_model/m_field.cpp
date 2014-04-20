@@ -1,52 +1,48 @@
 #include "m_field.h"
+#include "m_sector.h"
+#include "m_figure.h"
+
+/** Bezparametricky konstruktor **/
+/**
+ * m_field
+ * konstruktor bez parametru
+ */
 m_field::m_field(){
-	cout << "Obycejny konstruktor pole" << endl;
 	id = 42;
 	this->sector = NULL;
 	figure = NULL;
 	special = "nespecifikovano";
 }
-/// nastavi sektor a id pole
-m_field::m_field(int number){
-	cout << "Obycejny konstruktor pole" << endl;
-		id = number;
-		this->sector = NULL;
-		figure = NULL;
-		special = "hraci";
-		pocet++;
-}
-m_field::m_field(m_sector *sector,int number){
-//	cout << "Obycejny konstruktor pole" << endl;
-		id = number;
-		this->sector = sector;
-		figure = NULL;
-		special = "";
-		pocet++;
-}
-m_field::m_field(m_sector *sector,int number,std::string str_special){
-//	cout << "Obycejny konstruktor pole" << endl;
+
+/** Konstruktor **/
+/**
+ * m_field
+ * konstruktor - inicializuje objekt
+ *
+ * @param sector sektor, kteremu pole prislusi
+ * @param number identifikator pole
+ * @param str_special typ pole
+ */
+m_field::m_field(m_sector* sector,int number,std::string str_special){
 		id = number;
 		this->sector = sector;
 		figure = NULL;
 		special = str_special;
-		pocet++;
 }
 
-m_field::m_field(const m_field& original) {
-	cout << "Kopirovaci konstruktor pole" << endl;
-	
-	id = original.id;
-	sector = new m_sector();
-	figure = new m_figure();
-}
+/** Destruktor **/
+/** 
+ * destruktor
+ * uvolni objekt
+ */
 m_field::~m_field() {
-	cout << "Destruktor pro " << id << endl;
 	figure = NULL;
 	sector = NULL;
 	delete figure;
 	delete sector;
 }
 
+/** vypis instance **/
 ostream& operator<<(ostream& os,const m_field& m_f) {
 	os << "Pole c.: " << m_f.id <<  ", &" << (&m_f) << endl;
 	os << "\ttyp: " << m_f.special << endl;
@@ -56,19 +52,43 @@ ostream& operator<<(ostream& os,const m_field& m_f) {
 		os << "\t" << *(m_f.figure);
 	return os;
 }
-/// vrati sektor, ke kteremu pole prislusi
+
+/**
+ * getSector
+ * vrati sektor, kteremu pole prislusi
+ *
+ * @return sektor, kteremu pole prislusi
+ */ 
 m_sector *m_field::getSector() {
 	return sector;
 }
-/// vrati figuru na poli, pripadne null
+
+/**
+ * getFigure
+ * vrati figuru, ktera je na poli nebo NULL
+ *
+ * @return figura na poli nebi NULL 
+ */
 m_figure *m_field::getFigure() {
 	return figure;
 }
-/// vrati id daneho pole
+
+/**
+ * getID
+ * vrati identifikator pole
+ * 
+ * @return identifikator pole
+ */
 int m_field::getID() {
 	return id;
 }
 
+/**
+ * isFree
+ * zjisti, zda je na poli figura
+ * 
+ * @return true nebo false
+ */
 bool m_field::isFree() {
 	if (this->figure != NULL)
 		return false;
@@ -76,22 +96,40 @@ bool m_field::isFree() {
 		return true;
 	}
 }
+
+/**
+ * leftUntilEnd
+ * vrati pocet poli do konce sektoru
+ *
+ * @return pocet poli 
+ */
 int m_field::leftUntilEnd() {
 	return 9-id;
 }
-/// vlozi figuru na pole
+
+/**
+ * putFigure
+ * vlozi figuru na pole
+ *
+ * @param figure figura, ktera ma byt vlozena na pole
+ */
 void m_field::putFigure(m_figure *figure) {
 	//cout << "- putFigure -" << endl;
 	this->figure = figure;
 	//cout << *figure;
 
 }
-/// odstrani figuru z pole a vrati ji
+
+/**
+ * removeFigure
+ * odstrani figuru z pole
+ *
+ * @return odstranena figura nebo NULL
+ */
 m_figure *m_field::removeFigure() {
 	m_figure *old = NULL;
 	old = figure; 
 	figure = NULL;
-	return old;
-	
+	return old;	
 }
 

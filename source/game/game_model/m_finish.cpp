@@ -1,7 +1,24 @@
 #include "m_finish.h"
-m_finish::m_finish(){cout << "Obycejny konstruktor cile" << endl;}
+#include "m_sector.h"
+#include "m_field.h"
+#include "m_home.h"
+
+/** Bezparametricky konstruktor **/
+/**
+ * m_finish
+ * konstruktor bez parametru
+ */
+m_finish::m_finish(){}
+
+/** Konstruktor **/
+/**
+ * m_finish
+ * konstruktor - inicializuje objekt
+ *  - vytvori pole v oblasti cil
+ *
+ * @param sector sektor, kteremu oblast prislusi
+ */
 m_finish::m_finish(m_sector *sector) {
-	//cout << "Obycejny konstruktor cile" << endl;
 	this->sector = sector;
 	figure_count = 0;
 	list<m_field*>::iterator iterF;
@@ -16,29 +33,40 @@ m_finish::m_finish(m_sector *sector) {
 	}
 	
 }
-/*
-m_finish::m_finish(const m_finish &original) {
-	cout << "Kopirovaci konstruktor cile" << endl;
-	
-	figure_count = original.figure_count;
-	sector = new m_sector();
-	*sector = *original.sector;
-	std::list<m_field>::const_iterator iter_orig;
-	iter_orig = original.fields.begin();
-	for (;iter_orig != original.fields.end();iter_orig++) {
-		fields.push_back(*iter_orig);
-	}
-	
-}
-*/
+
+/** 
+ * destruktor
+ * uvolni objekt
+ */
 m_finish::~m_finish() {
 	sector = NULL;
 	delete sector;
 }
+
+/**
+ * getFields
+ * vrati seznam poli
+ *
+ * @return seznam poli
+ */
 std::list<m_field*>  m_finish::getFields() {
 	return fields;
 }
 
+/**
+ * getFigureCount
+ * vrati pocet figur v cili
+ *
+ * @return pocet figur
+ */
 int m_finish::getFigureCount () {
 	return figure_count;
+}
+
+/**
+ * increaseCount
+ * zvysi hodnotu citace figur o 1
+ */
+void m_finish::increaseCount() {
+	figure_count++;
 }

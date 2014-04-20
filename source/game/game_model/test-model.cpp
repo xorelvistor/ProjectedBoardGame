@@ -1,12 +1,10 @@
-#include "_game.h"
-class m_desk;
-int m_field::pocet = 0;
-int m_figure::pocet = 0;
+#include "model.h"
+#include "../m_lib.h"
+class m_player;
+class m_figure;
 
-m_field predani(m_field neco) {
-	cout << "Predani" << endl;
-	return neco;
-}
+
+
 int main () {
 	
 	m_desk *desk;
@@ -51,7 +49,7 @@ int main () {
 	moznosti = hrac1->getStrokes();
 	cout << "**** moznosti ****" << endl;
 	
-	for (int i = 0; i < moznosti.size() ; i++) {
+	for (unsigned int i = 0; i < moznosti.size() ; i++) {
 		cout << "pro figuru c.: " << i << endl;
 		if(moznosti[i] != NULL)
 			cout << *moznosti[i] << endl;
@@ -81,12 +79,12 @@ int main () {
 	std::advance(iP,1);
 	figurka->move(*iP);
 	*/
-	/*
+	
 	iS = sektory.begin();
 	
 	cout << "------------- pruchod v mainu -------------" << endl;
 	int oblasti = 2;
-	//for (iS = sektory.begin(); iS!= sektory.end(); iS++) {
+	for (iS = sektory.begin(); iS!= sektory.end(); iS++) {
 		cout << "sektor c.: " << (*iS)->getID() << ", &" << (*iS) << endl;
 		for (int i = 0; i < oblasti; i++) {
 			if (i == 0) {
@@ -97,17 +95,17 @@ int main () {
 				cout << "------------------------- hraci pole --------------------------" << endl;
 				policka = (*iS)->getFields();
 			} 
-			//else if (i == 2) {
-			//	cout << "------------------------- cilova pole --------------------------" << endl;
-			//	cout << (*iS)->getFinish()->getFigureCount() << endl;
-			//	policka = (*iS)->getFinish()->getFields();
-			//}
+			else if (i == 2) {
+				cout << "------------------------- cilova pole --------------------------" << endl;
+				cout << (*iS)->getFinish()->getFigureCount() << endl;
+				policka = (*iS)->getFinish()->getFields();
+			}
 			for (iP = policka.begin() ; iP != policka.end(); iP++) {
 				cout << "-" << *(*iP);
 			}
 		}
-	//}
-*/
+	}
+
 	cout << "xxxxx konec mainu xxxxx" << endl;
 	getchar();
 	return 0;
