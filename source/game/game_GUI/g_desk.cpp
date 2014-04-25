@@ -28,11 +28,6 @@ g_desk::g_desk(int rozmer, m_desk* deska) {
 	
 	pair(); /// priradi gerafickym objektum jejich modelove protejsky
 	calc(x, y, r, posun,skok); /// spocita rozlozeni policek (kriz)
-
-	//other_graphic_objects.push_back(cv::Point(200,500));
-	other_graphic_objects.push_back(cv::Point(600,500));
-	other_graphic_objects.push_back(cv::Point(600,100));
-	//other_graphic_objects.push_back(cv::Point(200,100));
 }
 
 void g_desk::draw() {

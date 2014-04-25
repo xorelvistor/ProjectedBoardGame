@@ -38,7 +38,7 @@ pair<Point,double> circleFromPoints(Point p1, Point p2, Point p3)
 
 //The main function :D
 bool detectHand(VideoCapture& cap, vector<Point2f>& hits) {
-	cout << CV_VERSION << endl;
+	//cout << CV_VERSION << endl;
 	if (!cap.isOpened()) {
 		cout << "kamera neni online" << endl;
 		return false;
@@ -61,7 +61,7 @@ bool detectHand(VideoCapture& cap, vector<Point2f>& hits) {
 	int klavesa = 0;
 	bool p = false;
 	
-	cout << "detekce" << endl;
+	//cout << "detekce" << endl;
 	//while(hits.empty()) {
 		//Get the frame
 		cap >> frame;
@@ -75,7 +75,7 @@ bool detectHand(VideoCapture& cap, vector<Point2f>& hits) {
 		//	backgroundFrame--;
 		//}
 		//}
-		waitKey(100);
+		//waitKey(100);
 
 		cap >> frame;
 
@@ -115,7 +115,7 @@ bool detectHand(VideoCapture& cap, vector<Point2f>& hits) {
 				
 				tcontours.push_back(contours[i]);
 				//drawContours(frame,tcontours,-1,cv::Scalar(255,255,255),2);
-				cout << "Obsah kontury (" << i << ") je " << obsah << endl;
+				//cout << "Obsah kontury (" << i << ") je " << obsah << endl;
 				//Detect Hull in current contour
 				
 				vector<vector<Point> > hulls(1);
@@ -280,7 +280,7 @@ bool detectHand(VideoCapture& cap, vector<Point2f>& hits) {
 			waitKey();
 		}
 	//}
-	cout << hits << endl;
+	//cout << hits << endl;
 	return true;
 }
 /*

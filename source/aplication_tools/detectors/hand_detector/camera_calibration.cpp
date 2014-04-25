@@ -459,9 +459,11 @@ bool systemCalibration(cv::Mat& camera, cv::Mat& distorsionCoeff, cv::Mat& homog
 	cam.set(CV_CAP_PROP_SATURATION,32.0);
 	cam.set(CV_CAP_PROP_CONTRAST,32.0);
 	cam.set(CV_CAP_PROP_BRIGHTNESS,128.0);
-	//cam.set(CV_CAP_PROP_EXPOSURE,0.0);
+	cam.set(CV_CAP_PROP_EXPOSURE,-4.0);
 	//cam.set(CV_CAP_PROP_GAIN,128.0);
-while(true) {	
+
+	bool ok = false;
+for(int i = 0 ; i < 10; i++) {	
 	cout << "***** Porizeni obrazu sachovnice kamerou *****" <<endl;
 
 	cout << "BRIGHTNESS: " << cam.get(CV_CAP_PROP_BRIGHTNESS) << endl;
@@ -486,12 +488,6 @@ while(true) {
 	moveWindow("Undistort", 400, 100);
 	imshow("Undistort",view);
 	cvWaitKey(100);
-	
-	/*
-	if (waitKey() == 27) {
-		view = projection; //DEBUG
-	}
-	*/
 
 	/* nalezeni homografie mezi kamerou a projektorem */
 	cout << "***** Nalezeni klicovych bodu v obrazech => homografie *****" << endl;
@@ -502,12 +498,12 @@ while(true) {
 	} else {
 		homography = in_homography;
 		cout << endl << in_homography << endl << endl;
+		ok = true;
 		break;
 	}
-
-	
-	//return true;
-}	
+}
+if (!ok)
+	return false;	
 	/*
 	cout << endl << "***** Reakce na mys *****" <<endl;
 	getchar();

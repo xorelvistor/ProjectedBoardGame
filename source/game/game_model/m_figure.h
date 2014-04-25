@@ -84,9 +84,11 @@ public:
 
 	/**
 	 * setOutOfSector
-	 * zmeni stav figury
+	 * zmeni stav figury na hodnotu expr
+	 * 
+	 * @param expr true/false 
 	 */
-	void setOutOfSector();
+	void setOutOfSector(bool expr);
 
 	/**
 	 * setField
@@ -102,7 +104,7 @@ public:
 	 *
 	 * @param new_field pole, kam se ma figura presunout
 	 */
-	void move(m_field* new_field);
+	bool move(m_field* new_field);
 
 	/**
 	 * goHome

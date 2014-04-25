@@ -4,6 +4,7 @@
 #include "m_sector.h"
 #include "m_field.h"
 #include "m_home.h"
+#include "m_finish.h"
 
 
 /** Bezparametricky konstruktor **/
@@ -132,8 +133,8 @@ void m_figure::setAtHome() {
  * setOutOfSector
  * zmeni stav figury
  */
-void m_figure::setOutOfSector() {
-	out_of_sector = !out_of_sector;
+void m_figure::setOutOfSector(bool expr) {
+	out_of_sector = expr;
 }
 
 /**
@@ -142,7 +143,15 @@ void m_figure::setOutOfSector() {
  *
  * @param new_field pole, kam se ma figura presunout
  */
-void m_figure::move(m_field* new_field) {
+bool m_figure::move(m_field* new_field) {
+	bool death = false;
+	if (new_field == NULL)
+		return false;
+
+	if(new_field->special == "finish") {
+		if(field->special != "finish")
+			owner->getSector()->getFinish()->increaseCount();
+	}
 	//cout << "---move---" << endl;
 	//cout << "-> from\n" << *field;
 	//cout << "<- to\n" << *new_field;
@@ -152,17 +161,21 @@ void m_figure::move(m_field* new_field) {
 	//cout << "- getFigure - to -" << endl;
 	figure = new_field->getFigure();
 
-	if (figure != NULL && new_field == owner->getStrokes()[id] && figure != this) {
+	if (figure != NULL && figure != this) { //new_field == owner->getStrokes()[id]
 		cout << "mam" << endl << *figure;
 		figure->goHome();
+		//getchar();
+		death = true;
 	}
 	//cout << "- removeFigure - to -" << endl;
 	new_field->removeFigure();
 	setField(new_field);
 	(new_field)->putFigure(this);
 	if (owner->getSector() != field->getSector()) {
-		setOutOfSector();
+		setOutOfSector(true);
 	}
+
+	return death;
 	
 }
 
@@ -187,6 +200,6 @@ void m_figure::goHome() {
 	setAtHome();
 	home->increaseCount();
 	if(out_of_sector)
-		setOutOfSector();
-	//cout << "--- end goHome ---\n";
+		setOutOfSector(false);
+	cout << "--- end goHome ---\n";
 }

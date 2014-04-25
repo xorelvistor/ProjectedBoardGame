@@ -22,14 +22,18 @@ void g_field::draw() {
 	float r = 0;
 	m_figure* figure;
 	figure = model_field->getFigure();
-	if (state == DETECT && figure != NULL && (figure->getOwner() == players[id])) { 
-		cout << endl << endl << "detekuju" << endl << endl;
-		r = 1.5*r_draw;
-		r_search = r;
-	} else {
-		r = r_draw;
+	r = r_draw;
+	if (state == DETECT && figure != NULL) {
+		if (figure->getOwner() == players[id] && (players[id])->getStrokes()[figure->getID()] != NULL) { 
+			//cout << endl << endl << "stroke (" << players[id]->getName() << "):";
+			//cout << "figura (" << figure->getID() << "): " << players[id]->getStrokes()[figure->getID()] << endl << endl;
+			r = 1.5*r_draw;
+			r_search = r;
+		} else {
+			r_search = 0; 
+		}
 	}
-	r_search = r-1.0;
+	
 	
 	TColor color;
 	color = getColor();
@@ -44,38 +48,24 @@ void g_field::draw() {
 		glColor3f(GLfloat(0.0), GLfloat(0.0), GLfloat(0.0));
 		drawCircle(position.x,position.y,r_draw*0.8);
 
-		glColor3f(GLfloat(color.r+0.2), GLfloat(color.g+0.2), GLfloat(color.b+0.2));
+		glColor3f(GLfloat(color.r+0.3), GLfloat(color.g+0.3), GLfloat(color.b+0.3));
 		drawCircle(position.x,position.y,r_draw*0.7);
 
 		glColor3f(GLfloat(color.r), GLfloat(color.g), GLfloat(color.b));
 		drawCircle(position.x,position.y,r_draw*0.4);
-	} 
+	}
+	glFlush();
 	
 	
 }
 
 void g_field::select() {
 /*
-	int num_segments = 20;
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glBegin(GL_POLYGON); 
-	for(int ii = 0; ii < num_segments; ii++) { 
-		float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle 
-		float x = r_draw/2 * cosf(theta);//calculate the x component 
-		float y = r_draw/2 * sinf(theta);//calculate the y component 
-		glVertex2f(GLfloat(x + position.x), GLfloat(y + position.y));//output vertex 
-	} 
-	glEnd(); 
-	glFlush();
-*/
-	//cout << "kreslim na pozici x = " << position.x << ", y = " << position.y << " kde je podle me tohle modelove pole:" << endl; 
-	cout << (*model_field) << "________" << endl;
-	std::ostringstream str;
-	//str << "Pole c.: " << model_field->getID();
-	//str << ", Sektor c.: " << model_field->getSector()->getID();
-	//str << ", Typ: " << model_field->special;
-	//getchar();
-
+	for (int i = 0; i < 10; i++) {
+		glColor4f(0.2*i,0.2*i,0.2*i,0.2*i);
+		drawCircle(position.x,position.y,40+2*i);
+	}
+	*/
 }
 
 void drawCircle(float cx, float cy, float r)  {

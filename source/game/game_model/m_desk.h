@@ -44,5 +44,5 @@ public:
 	 * @param player hrac, jehoz tahy budou zjisteny
 	 * @param xK6 hodnota hodu 
 	 */
-	m_field* findStrokes(m_player* player, int xK6);
+	bool findStrokes(m_player* player, int xK6);
 };

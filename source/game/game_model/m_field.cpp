@@ -104,7 +104,10 @@ bool m_field::isFree() {
  * @return pocet poli 
  */
 int m_field::leftUntilEnd() {
-	return 9-id;
+	if(special == "hraci")
+		return 9-id;
+	else
+		return 3-id;
 }
 
 /**
